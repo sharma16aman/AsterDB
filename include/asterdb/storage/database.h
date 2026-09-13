@@ -28,6 +28,9 @@ public:
     Database& operator=(const Database&) = delete;
 
     const DatabaseMetadata& metadata() const;
+    void set_root_page_id(PageId page_id);
+
+    PageId allocate_page();
     Page read_page(PageId page_id) const;
     void write_page(const Page& page);
 

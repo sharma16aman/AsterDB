@@ -20,6 +20,8 @@ add_library(AsterDBCore
     src/storage/page.cpp
     src/storage/disk_manager.cpp
     src/storage/database.cpp
+    src/storage/bplus_tree_node.cpp
+    src/storage/bplus_tree.cpp
 )
 
 target_include_directories(AsterDBCore
@@ -90,7 +92,35 @@ if(ASTERDB_ENABLE_ASAN)
         -fsanitize=address
         -fno-omit-frame-pointer
     )
+
     target_link_options(AsterDBCore PRIVATE
+        -fsanitize=address
+    )
+
+    target_compile_options(AsterDB PRIVATE
+        -fsanitize=address
+        -fno-omit-frame-pointer
+    )
+
+    target_link_options(AsterDB PRIVATE
+        -fsanitize=address
+    )
+
+    target_compile_options(AsterDBTests PRIVATE
+        -fsanitize=address
+        -fno-omit-frame-pointer
+    )
+
+    target_link_options(AsterDBTests PRIVATE
+        -fsanitize=address
+    )
+
+    target_compile_options(AsterDBBenchmarks PRIVATE
+        -fsanitize=address
+        -fno-omit-frame-pointer
+    )
+
+    target_link_options(AsterDBBenchmarks PRIVATE
         -fsanitize=address
     )
 endif()
@@ -99,7 +129,32 @@ if(ASTERDB_ENABLE_UBSAN)
     target_compile_options(AsterDBCore PRIVATE
         -fsanitize=undefined
     )
+
     target_link_options(AsterDBCore PRIVATE
+        -fsanitize=undefined
+    )
+
+    target_compile_options(AsterDB PRIVATE
+        -fsanitize=undefined
+    )
+
+    target_link_options(AsterDB PRIVATE
+        -fsanitize=undefined
+    )
+
+    target_compile_options(AsterDBTests PRIVATE
+        -fsanitize=undefined
+    )
+
+    target_link_options(AsterDBTests PRIVATE
+        -fsanitize=undefined
+    )
+
+    target_compile_options(AsterDBBenchmarks PRIVATE
+        -fsanitize=undefined
+    )
+
+    target_link_options(AsterDBBenchmarks PRIVATE
         -fsanitize=undefined
     )
 endif()
@@ -108,7 +163,32 @@ if(ASTERDB_ENABLE_TSAN)
     target_compile_options(AsterDBCore PRIVATE
         -fsanitize=thread
     )
+
     target_link_options(AsterDBCore PRIVATE
+        -fsanitize=thread
+    )
+
+    target_compile_options(AsterDB PRIVATE
+        -fsanitize=thread
+    )
+
+    target_link_options(AsterDB PRIVATE
+        -fsanitize=thread
+    )
+
+    target_compile_options(AsterDBTests PRIVATE
+        -fsanitize=thread
+    )
+
+    target_link_options(AsterDBTests PRIVATE
+        -fsanitize=thread
+    )
+
+    target_compile_options(AsterDBBenchmarks PRIVATE
+        -fsanitize=thread
+    )
+
+    target_link_options(AsterDBBenchmarks PRIVATE
         -fsanitize=thread
     )
 endif()
