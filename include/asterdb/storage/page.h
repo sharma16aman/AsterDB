@@ -3,10 +3,14 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 
 namespace asterdb {
 
 using PageId = std::uint64_t;
+
+inline constexpr PageId INVALID_PAGE_ID =
+    std::numeric_limits<PageId>::max();
 
 enum class PageType : std::uint8_t {
     Invalid = 0,

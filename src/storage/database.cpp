@@ -1,4 +1,5 @@
 #include "asterdb/storage/database.h"
+#include "asterdb/storage/bplus_tree_node.h"
 
 #include <algorithm>
 #include <array>
@@ -87,8 +88,13 @@ void Database::initialize_new_database() {
 
     write_metadata();
 
-    Page root_page(root_page_id, PageType::Data);
-    disk_->write_page(root_page);
+    BPlusTreeNode root_node(
+    root_page_id,
+    BPlusTreeNodeType::Leaf
+    );
+
+    disk_->write_page(root_node.to_page());
+
 }
 
 void Database::load_existing_database() {
@@ -152,6 +158,21 @@ DatabaseMetadata Database::read_metadata() const {
 
 const DatabaseMetadata& Database::metadata() const {
     return metadata_;
+}
+
+void Database::set_root_page_id(PageId page_id) {
+    if (page_id >= disk_->page_count()) {
+        throw std::out_of_range(
+            "Root page ID is outside the database"
+        );
+    }
+
+    metadata_.root_page_id = page_id;
+    write_metadata();
+}
+
+PageId Database::allocate_page() {
+    return disk_->allocate_page();
 }
 
 Page Database::read_page(PageId page_id) const {
